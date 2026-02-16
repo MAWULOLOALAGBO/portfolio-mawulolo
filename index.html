@@ -1,0 +1,728 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mawulolo Alagbo | Data Analyst & Scientist</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #0a0a0a;
+            color: #ffffff;
+            overflow-x: hidden;
+        }
+        h1, h2, h3, .font-display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+        .gradient-text {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .skill-tag {
+            transition: all 0.3s ease;
+        }
+        .skill-tag:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+        }
+        .project-card {
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .project-card:hover {
+            transform: translateY(-8px) scale(1.02);
+        }
+        .timeline-line {
+            background: linear-gradient(to bottom, #667eea, #764ba2, transparent);
+        }
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        .cursor-glow {
+            width: 300px;
+            height: 300px;
+            background: radial-gradient(circle, rgba(102, 126, 234, 0.15) 0%, transparent 70%);
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            transform: translate(-50%, -50%);
+            transition: opacity 0.3s;
+        }
+        .nav-blur {
+            background: rgba(10, 10, 10, 0.8);
+            backdrop-filter: blur(20px);
+        }
+        .image-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 10000;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .image-modal.active {
+            display: flex;
+        }
+        .image-modal img {
+            max-width: 90%;
+            max-height: 90%;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+        }
+        .project-image {
+            transition: transform 0.3s ease;
+            cursor: zoom-in;
+        }
+        .project-image:hover {
+            transform: scale(1.05);
+        }
+        .stat-card {
+            background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+            border: 1px solid rgba(102, 126, 234, 0.3);
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="cursor-glow" id="cursorGlow"></div>
+    
+    <!-- Image Modal -->
+    <div class="image-modal" id="imageModal" onclick="closeModal()">
+        <img src="" alt="Preview" id="modalImage">
+    </div>
+
+    <!-- Navigation -->
+    <nav class="fixed w-full z-50 nav-blur border-b border-white/10">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="font-display text-2xl font-bold gradient-text">MA.</div>
+            <div class="hidden md:flex space-x-8 text-sm font-medium">
+                <a href="#about" class="hover:text-purple-400 transition-colors">À propos</a>
+                <a href="#skills" class="hover:text-purple-400 transition-colors">Compétences</a>
+                <a href="#experience" class="hover:text-purple-400 transition-colors">Expériences</a>
+                <a href="#projects" class="hover:text-purple-400 transition-colors">Projets</a>
+                <a href="#contact" class="hover:text-purple-400 transition-colors">Contact</a>
+            </div>
+            <button onclick="toggleMenu()" class="md:hidden">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-black/95 border-t border-white/10">
+            <div class="flex flex-col p-6 space-y-4">
+                <a href="#about" class="hover:text-purple-400">À propos</a>
+                <a href="#skills" class="hover:text-purple-400">Compétences</a>
+                <a href="#experience" class="hover:text-purple-400">Expériences</a>
+                <a href="#projects" class="hover:text-purple-400">Projets</a>
+                <a href="#contact" class="hover:text-purple-400">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="about" class="relative min-h-screen flex items-center justify-center pt-20 overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-purple-900/20 via-transparent to-transparent"></div>
+        <div class="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,_var(--tw-gradient-stops))] from-blue-900/20 via-transparent to-transparent"></div>
+        
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-12 items-center relative z-10">
+            <div class="space-y-8">
+                <div class="inline-flex items-center space-x-2 px-4 py-2 rounded-full glass-card text-sm">
+                    <span class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></span>
+                    <span class="text-gray-300">Disponible pour alternance</span>
+                </div>
+                
+                <h1 class="font-display text-5xl md:text-7xl font-bold leading-tight">
+                    Mawulolo <span class="gradient-text">Alagbo</span>
+                </h1>
+                
+                <p class="text-xl md:text-2xl text-gray-400 font-light">
+                    Data Analyst & Scientist • <span class="text-purple-400">IUT de Vannes</span>
+                </p>
+                
+                <p class="text-gray-400 leading-relaxed max-w-lg text-lg">
+                    Passionné par l'<strong>analyse statistique</strong>, l'<strong>exploration de données</strong> et la <strong>conception de solutions automatisées</strong>. Je transforme les données complexes en insights actionnables.
+                </p>
+                
+                <div class="flex flex-wrap gap-4">
+                    <a href="#contact" class="px-8 py-4 bg-gradient-to-r from-purple-600 to-blue-600 rounded-full font-medium hover:shadow-lg hover:shadow-purple-500/25 transition-all transform hover:scale-105">
+                        Me contacter
+                    </a>
+                    <a href="#projects" class="px-8 py-4 glass-card rounded-full font-medium hover:bg-white/10 transition-all">
+                        Voir mes projets
+                    </a>
+                    <!-- LIEN CV CORRIGÉ - Remplace TON_USERNAME -->
+                    <a href="https://github.com/MAWULOLOALAGBO/portfolio-mawulolo/raw/main/CV_Mawulolo_Alagbo.pdf" 
+                       download 
+                       class="px-8 py-4 glass-card rounded-full font-medium hover:bg-white/10 transition-all flex items-center gap-2">
+                        <i data-lucide="download" class="w-4 h-4"></i> Télécharger CV
+                    </a>
+                </div>
+                
+                <div class="flex items-center space-x-6 pt-4">
+                    <a href="https://linkedin.com/in/parfait-alagbo" target="_blank" class="text-gray-400 hover:text-white transition-colors">
+                        <i data-lucide="linkedin" class="w-6 h-6"></i>
+                    </a>
+                    <a href="https://github.com/MAWULOLOALAGBO" target="_blank" class="text-gray-400 hover:text-white transition-colors">
+                        <i data-lucide="github" class="w-6 h-6"></i>
+                    </a>
+                    <a href="mailto:parfaitalagbo18@gmail.com" class="text-gray-400 hover:text-white transition-colors">
+                        <i data-lucide="mail" class="w-6 h-6"></i>
+                    </a>
+                </div>
+            </div>
+            
+            <div class="relative floating">
+                <div class="relative w-full aspect-square max-w-md mx-auto">
+                    <div class="absolute inset-0 bg-gradient-to-br from-purple-600/30 to-blue-600/30 rounded-full blur-3xl"></div>
+                    <div class="relative glass-card rounded-3xl p-8 h-full flex flex-col justify-center items-center text-center space-y-6">
+                        <div class="w-32 h-32 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-4xl font-bold font-display">
+                            MA
+                        </div>
+                        <div class="space-y-2">
+                            <div class="text-sm text-gray-400">Actuellement</div>
+                            <div class="text-lg font-semibold">Stagiaire Data Analyst</div>
+                            <div class="text-purple-400">Ospharm • Saint-Nazaire</div>
+                        </div>
+                        <div class="grid grid-cols-2 gap-4 w-full pt-4">
+                            <div class="glass-card rounded-xl p-4">
+                                <div class="text-2xl font-bold gradient-text">3ème</div>
+                                <div class="text-xs text-gray-400">Année BUT SD</div>
+                            </div>
+                            <div class="glass-card rounded-xl p-4">
+                                <div class="text-2xl font-bold gradient-text">21</div>
+                                <div class="text-xs text-gray-400">Ans</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
+            <i data-lucide="chevron-down" class="w-6 h-6 text-gray-400"></i>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Compétences <span class="gradient-text">Clés</span></h2>
+                <p class="text-gray-400">4 piliers de la Science des Données</p>
+            </div>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+                <div class="glass-card rounded-2xl p-6 text-center hover:border-blue-500/50 transition-all group">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-blue-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i data-lucide="search" class="w-8 h-8 text-blue-400"></i>
+                    </div>
+                    <h3 class="font-display text-xl font-bold mb-2">Analyse</h3>
+                    <p class="text-sm text-gray-400">Analyse de données, statistiques descriptives et inférentielles</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 text-center hover:border-green-500/50 transition-all group">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i data-lucide="database" class="w-8 h-8 text-green-400"></i>
+                    </div>
+                    <h3 class="font-display text-xl font-bold mb-2">Traitement</h3>
+                    <p class="text-sm text-gray-400">Gestion de bases de données, extraction et nettoyage</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 text-center hover:border-purple-500/50 transition-all group">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-purple-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i data-lucide="bar-chart-2" class="w-8 h-8 text-purple-400"></i>
+                    </div>
+                    <h3 class="font-display text-xl font-bold mb-2">Valorisation</h3>
+                    <p class="text-sm text-gray-400">Visualisation avec graphiques et KPI, tableaux de bord</p>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6 text-center hover:border-pink-500/50 transition-all group">
+                    <div class="w-16 h-16 mx-auto mb-4 rounded-full bg-pink-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i data-lucide="brain" class="w-8 h-8 text-pink-400"></i>
+                    </div>
+                    <h3 class="font-display text-xl font-bold mb-2">Modélisation</h3>
+                    <p class="text-sm text-gray-400">Régression linéaire/multiple, validation, prédiction</p>
+                </div>
+            </div>
+
+            <div class="grid md:grid-cols-2 gap-8">
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="font-display text-xl font-bold mb-6 flex items-center gap-2">
+                        <i data-lucide="code" class="w-5 h-5 text-purple-400"></i>
+                        Langages
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag px-4 py-2 rounded-full bg-blue-500/10 text-blue-300 text-sm border border-blue-500/20">Python</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-blue-500/10 text-blue-300 text-sm border border-blue-500/20">R</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-blue-500/10 text-blue-300 text-sm border border-blue-500/20">SQL</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-blue-500/10 text-blue-300 text-sm border border-blue-500/20">VBA</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-blue-500/10 text-blue-300 text-sm border border-blue-500/20">DAX</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-blue-500/10 text-blue-300 text-sm border border-blue-500/20">M</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-blue-500/10 text-blue-300 text-sm border border-blue-500/20">HTML/CSS</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-blue-500/10 text-blue-300 text-sm border border-blue-500/20">JavaScript</span>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-6">
+                    <h3 class="font-display text-xl font-bold mb-6 flex items-center gap-2">
+                        <i data-lucide="monitor" class="w-5 h-5 text-purple-400"></i>
+                        Logiciels
+                    </h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="skill-tag px-4 py-2 rounded-full bg-purple-500/10 text-purple-300 text-sm border border-purple-500/20">Power BI</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-purple-500/10 text-purple-300 text-sm border border-purple-500/20">R Studio</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-purple-500/10 text-purple-300 text-sm border border-purple-500/20">Excel</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-purple-500/10 text-purple-300 text-sm border border-purple-500/20">VS Code</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-purple-500/10 text-purple-300 text-sm border border-purple-500/20">GitHub</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-purple-500/10 text-purple-300 text-sm border border-purple-500/20">Notion</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-purple-500/10 text-purple-300 text-sm border border-purple-500/20">SAS</span>
+                        <span class="skill-tag px-4 py-2 rounded-full bg-purple-500/10 text-purple-300 text-sm border border-purple-500/20">Looping</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Experience Section -->
+    <section id="experience" class="py-24 relative bg-white/5">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Parcours <span class="gradient-text">Professionnel</span></h2>
+            </div>
+
+            <div class="relative">
+                <div class="absolute left-8 top-0 bottom-0 w-0.5 timeline-line hidden md:block"></div>
+
+                <!-- Ospharm -->
+                <div class="relative mb-12 md:pl-20 group">
+                    <div class="hidden md:block absolute left-6 top-0 w-4 h-4 rounded-full bg-purple-500 border-4 border-black group-hover:scale-150 transition-transform"></div>
+                    <div class="glass-card rounded-2xl p-6 md:p-8 hover:border-purple-500/30 transition-all">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                            <div>
+                                <h3 class="font-display text-xl font-bold text-white">Stagiaire Data Analyst</h3>
+                                <p class="text-purple-400 font-medium">Ospharm • Saint-Nazaire</p>
+                            </div>
+                            <span class="text-sm text-gray-500 mt-2 md:mt-0">Février - Mai 2026</span>
+                        </div>
+                        <p class="text-gray-400 mb-4">Analyse de données pharmaceutiques, création de tableaux de bord et automatisation des processus reporting.</p>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs px-3 py-1 rounded-full bg-purple-500/10 text-purple-300">Power BI</span>
+                            <span class="text-xs px-3 py-1 rounded-full bg-purple-500/10 text-purple-300">SQL</span>
+                            <span class="text-xs px-3 py-1 rounded-full bg-purple-500/10 text-purple-300">Python</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Crédit Agricole -->
+                <div class="relative mb-12 md:pl-20 group">
+                    <div class="hidden md:block absolute left-6 top-0 w-4 h-4 rounded-full bg-blue-500 border-4 border-black group-hover:scale-150 transition-transform"></div>
+                    <div class="glass-card rounded-2xl p-6 md:p-8 hover:border-blue-500/30 transition-all">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                            <div>
+                                <h3 class="font-display text-xl font-bold text-white">Stagiaire Data Analyst</h3>
+                                <p class="text-blue-400 font-medium">Crédit Agricole du Morbihan • Vannes</p>
+                            </div>
+                            <span class="text-sm text-gray-500 mt-2 md:mt-0">Mars - Juin 2025</span>
+                        </div>
+                        <ul class="text-gray-400 mb-4 space-y-2 list-disc list-inside">
+                            <li>Optimisation du suivi d'activité (Power BI, Power Query, M, DAX)</li>
+                            <li>Automatisation du suivi des collaborateurs en CDD (Excel VBA)</li>
+                            <li>Tableau de bord de pilotage de charge quotidienne</li>
+                        </ul>
+                        <div class="flex flex-wrap gap-2">
+                            <span class="text-xs px-3 py-1 rounded-full bg-blue-500/10 text-blue-300">Power BI</span>
+                            <span class="text-xs px-3 py-1 rounded-full bg-blue-500/10 text-blue-300">DAX</span>
+                            <span class="text-xs px-3 py-1 rounded-full bg-blue-500/10 text-blue-300">Power Query (M)</span>
+                            <span class="text-xs px-3 py-1 rounded-full bg-blue-500/10 text-blue-300">Excel/VBA</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bibliothèque -->
+                <div class="relative md:pl-20 group">
+                    <div class="hidden md:block absolute left-6 top-0 w-4 h-4 rounded-full bg-yellow-500 border-4 border-black group-hover:scale-150 transition-transform"></div>
+                    <div class="glass-card rounded-2xl p-6 md:p-8 hover:border-yellow-500/30 transition-all">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between mb-4">
+                            <div>
+                                <h3 class="font-display text-xl font-bold text-white">Moniteur Étudiant</h3>
+                                <p class="text-yellow-400 font-medium">Bibliothèque IUT de Vannes</p>
+                            </div>
+                            <span class="text-sm text-gray-500 mt-2 md:mt-0">Nov 2023 - Juil 2025</span>
+                        </div>
+                        <ul class="text-gray-400 mb-4 space-y-2 list-disc list-inside">
+                            <li>Traitement matériel des documents</li>
+                            <li>Prêt et retour des documents</li>
+                            <li>Renseignements bibliographiques</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section avec IMAGES GITHUB -->
+    <section id="projects" class="py-24 relative">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Projets <span class="gradient-text">Data</span></h2>
+                <p class="text-gray-400">Réalisations académiques et professionnelles</p>
+            </div>
+
+            <!-- Projet 1: Prédiction Espérance de Vie -->
+            <div class="mb-16">
+                <div class="glass-card rounded-2xl overflow-hidden">
+                    <div class="grid md:grid-cols-2 gap-0">
+                        <div class="p-8 space-y-6">
+                            <div>
+                                <div class="flex items-center gap-2 mb-2 flex-wrap">
+                                    <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs">R</span>
+                                    <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs">Régression</span>
+                                    <span class="px-3 py-1 rounded-full bg-blue-500/20 text-blue-300 text-xs">Modélisation</span>
+                                </div>
+                                <h3 class="font-display text-2xl font-bold mb-2">Prédiction de l'Espérance de Vie</h3>
+                                <p class="text-gray-400">Modélisation par régression linéaire pour prédire l'espérance de vie. Validation rigoureuse du modèle.</p>
+                            </div>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-start gap-3">
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0"></i>
+                                    <span class="text-sm text-gray-300">Analyse exploratoire et corrélations</span>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0"></i>
+                                    <span class="text-sm text-gray-300">Régression : R² = 0.61, RMSE = 5.794</span>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0"></i>
+                                    <span class="text-sm text-gray-300">Validation : normalité, homoscédasticité</span>
+                                </div>
+                            </div>
+
+                            <div class="stat-card rounded-lg p-4 space-y-2">
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-400">R²</span>
+                                    <span class="text-blue-400 font-bold">0.6099</span>
+                                </div>
+                                <div class="flex justify-between text-sm">
+                                    <span class="text-gray-400">RMSE</span>
+                                    <span class="text-blue-400 font-bold">5.794</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- IMAGES GITHUB - Remplace TON_USERNAME -->
+                        <div class="bg-gradient-to-br from-blue-900/20 to-black p-8 flex flex-col justify-center space-y-4">
+                            <p class="text-sm text-gray-500 mb-2">Aperçu du projet :</p>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div class="relative group cursor-pointer" onclick="openModal('https://raw.githubusercontent.com/MAWULOLOALAGBO/portfolio-mawulolo/main/images/image1.png')">
+                                    <img src="https://raw.githubusercontent.com/MAWULOLOALAGBO/portfolio-mawulolo/main/images/image1.png" 
+                                         alt="Tableau de données" 
+                                         class="project-image rounded-lg w-full h-32 object-cover border border-white/10"
+                                         onerror="this.src='https://via.placeholder.com/400x300/3b82f6/ffffff?text=Données'">
+                                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                                        <i data-lucide="zoom-in" class="w-6 h-6 text-white"></i>
+                                    </div>
+                                </div>
+                                <div class="relative group cursor-pointer" onclick="openModal('https://raw.githubusercontent.com/MAWULOLOALAGBO/portfolio-mawulolo/main/images/image2.png')">
+                                    <img src="https://raw.githubusercontent.com/MAWULOLOALAGBO/portfolio-mawulolo/main/images/image2.png" 
+                                         alt="Distribution" 
+                                         class="project-image rounded-lg w-full h-32 object-cover border border-white/10"
+                                         onerror="this.src='https://via.placeholder.com/400x300/3b82f6/ffffff?text=Distribution'">
+                                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                                        <i data-lucide="zoom-in" class="w-6 h-6 text-white"></i>
+                                    </div>
+                                </div>
+                                <div class="relative group cursor-pointer" onclick="openModal('https://raw.githubusercontent.com/MAWULOLOALAGBO/portfolio-mawulolo/main/images/image4.png')">
+                                    <img src="https://raw.githubusercontent.com/MAWULOLOALAGBO/portfolio-mawulolo/main/images/image4.png" 
+                                         alt="Matrice corrélation" 
+                                         class="project-image rounded-lg w-full h-32 object-cover border border-white/10"
+                                         onerror="this.src='https://via.placeholder.com/400x300/3b82f6/ffffff?text=Corrélation'">
+                                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                                        <i data-lucide="zoom-in" class="w-6 h-6 text-white"></i>
+                                    </div>
+                                </div>
+                                <div class="relative group cursor-pointer" onclick="openModal('https://raw.githubusercontent.com/MAWULOLOALAGBO/portfolio-mawulolo/main/images/image5.png')">
+                                    <img src="https://raw.githubusercontent.com/MAWULOLOALAGBO/portfolio-mawulolo/main/images/image5.png" 
+                                         alt="Régression" 
+                                         class="project-image rounded-lg w-full h-32 object-cover border border-white/10"
+                                         onerror="this.src='https://via.placeholder.com/400x300/3b82f6/ffffff?text=Régression'">
+                                    <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                                        <i data-lucide="zoom-in" class="w-6 h-6 text-white"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projet 2: Application Shiny -->
+            <div class="mb-16">
+                <div class="glass-card rounded-2xl overflow-hidden">
+                    <div class="grid md:grid-cols-2 gap-0">
+                        <div class="bg-gradient-to-br from-red-900/20 to-black p-8 flex flex-col justify-center space-y-4 order-2 md:order-1">
+                            <p class="text-sm text-gray-500 mb-2">Application Shiny :</p>
+                            <div class="relative group cursor-pointer" onclick="openModal('https://raw.githubusercontent.com/MAWULOLOALAGBO/portfolio-mawulolo/main/images/shiny-carte.png')">
+                                <img src="https://raw.githubusercontent.com/MAWULOLOALAGBO/portfolio-mawulolo/main/images/shiny-carte.png" 
+                                     alt="Carte criminalité USA" 
+                                     class="project-image rounded-lg w-full h-64 object-cover border border-white/10"
+                                     onerror="this.src='https://via.placeholder.com/800x400/ef4444/ffffff?text=Carte+Shiny'">
+                                <div class="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded-lg flex items-center justify-center">
+                                    <i data-lucide="zoom-in" class="w-8 h-8 text-white"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-8 space-y-6 order-1 md:order-2">
+                            <div>
+                                <div class="flex items-center gap-2 mb-2 flex-wrap">
+                                    <span class="px-3 py-1 rounded-full bg-red-500/20 text-red-300 text-xs">R Shiny</span>
+                                    <span class="px-3 py-1 rounded-full bg-red-500/20 text-red-300 text-xs">ACP</span>
+                                    <span class="px-3 py-1 rounded-full bg-red-500/20 text-red-300 text-xs">Géospatial</span>
+                                </div>
+                                <h3 class="font-display text-2xl font-bold mb-2">Analyse en Composantes Principales</h3>
+                                <p class="text-gray-400">Application web interactive pour l'analyse de la criminalité aux USA.</p>
+                            </div>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-start gap-3">
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0"></i>
+                                    <span class="text-sm text-gray-300">Carte choroplèthe interactive</span>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-red-400 mt-0.5 flex-shrink-0"></i>
+                                    <span class="text-sm text-gray-300">Analyse en composantes principales</span>
+                                </div>
+                            </div>
+
+                            <a href="https://mawuloloalagbo.shinyapps.io/Bilan_Criminalites_USA/" target="_blank" 
+                               class="inline-flex items-center gap-2 text-red-400 hover:text-red-300 font-medium transition-colors">
+                                Voir l'application <i data-lucide="external-link" class="w-4 h-4"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Projet 3: Accidentologie -->
+            <div class="mb-16">
+                <div class="glass-card rounded-2xl overflow-hidden">
+                    <div class="grid md:grid-cols-2 gap-0">
+                        <div class="p-8 space-y-6">
+                            <div>
+                                <div class="flex items-center gap-2 mb-2 flex-wrap">
+                                    <span class="px-3 py-1 rounded-full bg-yellow-500/20 text-yellow-300 text-xs">Power BI</span>
+                                    <span class="px-3 py-1 rounded-full bg-yellow-500/20 text-yellow-300 text-xs">DAX</span>
+                                </div>
+                                <h3 class="font-display text-2xl font-bold mb-2">Analyse des Données d'Accidentologie</h3>
+                                <p class="text-gray-400">Projet étudiant d'analyse des accidents de la route.</p>
+                            </div>
+                            
+                            <div class="space-y-3">
+                                <div class="flex items-start gap-3">
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-yellow-400 mt-0.5 flex-shrink-0"></i>
+                                    <span class="text-sm text-gray-300">Nettoyage Power Query</span>
+                                </div>
+                                <div class="flex items-start gap-3">
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-yellow-400 mt-0.5 flex-shrink-0"></i>
+                                    <span class="text-sm text-gray-300">Mesures DAX pour KPIs</span>
+                                </div>
+                            </div>
+
+                            <div class="flex gap-2">
+                                <span class="text-xs px-2 py-1 rounded bg-white/10">Power BI</span>
+                                <span class="text-xs px-2 py-1 rounded bg-white/10">DAX</span>
+                                <span class="text-xs px-2 py-1 rounded bg-white/10">M</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-gradient-to-br from-yellow-900/20 to-black p-8 flex items-center justify-center">
+                            <div class="text-center space-y-4">
+                                <div class="w-20 h-20 mx-auto rounded-full bg-yellow-500/20 flex items-center justify-center">
+                                    <i data-lucide="car" class="w-10 h-10 text-yellow-400"></i>
+                                </div>
+                                <p class="text-gray-400">Projet novembre 2024</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Formation Section -->
+    <section class="py-24 relative bg-white/5">
+        <div class="max-w-5xl mx-auto px-6">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl md:text-5xl font-bold mb-4">Formation</h2>
+            </div>
+
+            <div class="space-y-6">
+                <div class="glass-card rounded-2xl p-8 flex flex-col md:flex-row gap-6 items-start">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="graduation-cap" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-display text-2xl font-bold mb-1">BUT Science des Données (SD)</h3>
+                        <p class="text-purple-400 font-medium mb-2">IUT de Vannes • 2023 - 2026</p>
+                        <p class="text-gray-400 mb-3">Parcours Exploration et Modélisation Statistique. Spécialité IA et Mathématiques.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-8 flex flex-col md:flex-row gap-6 items-start">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="book-open" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-display text-2xl font-bold mb-1">Licence 1 Mathématiques</h3>
+                        <p class="text-blue-400 font-medium mb-2">Université de Lomé • 2020 - 2021</p>
+                    </div>
+                </div>
+
+                <div class="glass-card rounded-2xl p-8 flex flex-col md:flex-row gap-6 items-start">
+                    <div class="w-16 h-16 rounded-full bg-gradient-to-br from-green-500 to-emerald-500 flex items-center justify-center flex-shrink-0">
+                        <i data-lucide="school" class="w-8 h-8 text-white"></i>
+                    </div>
+                    <div class="flex-1">
+                        <h3 class="font-display text-2xl font-bold mb-1">Baccalauréat Scientifique</h3>
+                        <p class="text-green-400 font-medium mb-2">Lycée de Zomayi, Kpalimé - Togo • 2017 - 2020</p>
+                        <p class="text-gray-400">Mention Bien. Spécialités : SVT, Mathématiques, Physique-Chimie.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 relative bg-gradient-to-b from-white/5 to-transparent">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="font-display text-4xl md:text-5xl font-bold mb-6">Travaillons <span class="gradient-text">Ensemble</span></h2>
+            <p class="text-gray-400 text-lg mb-12 max-w-2xl mx-auto">
+                Actuellement à la recherche d'une alternance en analyse de données, statistiques et informatique.
+            </p>
+
+            <div class="grid md:grid-cols-3 gap-6 mb-12">
+                <a href="mailto:parfaitalagbo18@gmail.com" class="glass-card rounded-2xl p-6 hover:border-purple-500/30 transition-all group">
+                    <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-purple-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i data-lucide="mail" class="w-6 h-6 text-purple-400"></i>
+                    </div>
+                    <p class="text-sm text-gray-400">Email</p>
+                    <p class="font-medium text-sm">parfaitalagbo18@gmail.com</p>
+                </a>
+                
+                <a href="https://linkedin.com/in/parfait-alagbo" target="_blank" class="glass-card rounded-2xl p-6 hover:border-blue-500/30 transition-all group">
+                    <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-blue-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i data-lucide="linkedin" class="w-6 h-6 text-blue-400"></i>
+                    </div>
+                    <p class="text-sm text-gray-400">LinkedIn</p>
+                    <p class="font-medium">Parfait Alagbo</p>
+                </a>
+                
+                <div class="glass-card rounded-2xl p-6 hover:border-green-500/30 transition-all group">
+                    <div class="w-12 h-12 mx-auto mb-4 rounded-full bg-green-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+                        <i data-lucide="map-pin" class="w-6 h-6 text-green-400"></i>
+                    </div>
+                    <p class="text-sm text-gray-400">Localisation</p>
+                    <p class="font-medium">14 Avenue Victor Hugo<br>56000 Vannes</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="font-display text-xl font-bold gradient-text">MA.</div>
+            <p class="text-gray-500 text-sm">© 2025 Mawulolo Alagbo. Tous droits réservés.</p>
+            <div class="flex space-x-4">
+                <a href="https://linkedin.com/in/parfait-alagbo" target="_blank" class="text-gray-400 hover:text-white transition-colors">
+                    <i data-lucide="linkedin" class="w-5 h-5"></i>
+                </a>
+                <a href="https://github.com/MAWULOLOALAGBO" target="_blank" class="text-gray-400 hover:text-white transition-colors">
+                    <i data-lucide="github" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+
+        function toggleMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function openModal(imageSrc) {
+            const modal = document.getElementById('imageModal');
+            const modalImg = document.getElementById('modalImage');
+            modalImg.src = imageSrc;
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('imageModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') closeModal();
+        });
+
+        const cursorGlow = document.getElementById('cursorGlow');
+        document.addEventListener('mousemove', (e) => {
+            cursorGlow.style.left = e.clientX + 'px';
+            cursorGlow.style.top = e.clientY + 'px';
+        });
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    document.getElementById('mobileMenu').classList.add('hidden');
+                }
+            });
+        });
+
+        const observerOptions = { threshold: 0.1, rootMargin: '0px 0px -50px 0px' };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.glass-card, .project-card').forEach((el, index) => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = `all 0.6s ease-out ${index * 0.1}s`;
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
